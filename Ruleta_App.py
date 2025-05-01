@@ -467,29 +467,12 @@ if "df" in st.session_state:
     # Mostrar en Streamlit
     st.pyplot(fig)
 
-    # ➤ Visualización del IC para la Proporción de Victorias
-    st.subheader("📉 Visualización del Intervalo de Confianza para la Proporción de Victorias")
-    fig_prop, ax_prop = plt.subplots()
-
-    # Barra para la frecuencia relativa observada
-    ax_prop.bar(["Proporción Observada"], [frecuencia_relativa], color='mediumseagreen', alpha=0.7, label='Frecuencia Relativa')
-
-    # Líneas para el IC
-    ax_prop.errorbar(["Proporción Observada"], [frecuencia_relativa], 
-                    yerr=[[frecuencia_relativa - li_prop], [ls_prop - frecuencia_relativa]],
-                    fmt='o', color='black', capsize=10, label='IC 95%')
-
-    ax_prop.set_ylim(0, 1)
-    ax_prop.set_ylabel("Proporción")
-    ax_prop.set_title("Intervalo de Confianza para la Proporción de Victorias")
-    ax_prop.legend()
-    st.pyplot(fig_prop)
-
+    
 
 
     st.markdown(f"""
     <p style="font-size:20px;">
-    Tras simular <strong>{giros_totales} giros</strong> de ruleta, se obtuvo una <strong>frecuencia relativa de victorias</strong> de <strong>{frecuencia_relativa:.4f}</strong>, valor coherente con la probabilidad esperada al apostar aleatoriamente entre "rojo" y "negro" (alrededor de 18/37 ≈ 0.4865). La <strong>ganancia final</strong> fue de <strong>{capital - capital_inicial} unidades</strong>, con una <strong>desviación estándar</strong> de <strong>{np.std(ganancias):.2f}</strong>, lo que refleja la volatilidad del juego.
+     Tras simular <strong>{giros_totales} giros</strong> de ruleta, se obtuvo una <strong>frecuencia relativa de victorias</strong> de <strong>{frecuencia_relativa:.4f}</strong>, valor coherente con la probabilidad esperada al apostar aleatoriamente entre "rojo" y "negro" (alrededor de 18/37 ≈ 0.4865). La <strong>ganancia final</strong> fue de <strong>{capital - capital_inicial} unidades</strong>, con una <strong>desviación estándar</strong> de <strong>{np.std(ganancias):.2f}</strong>, lo que refleja la volatilidad del juego.
 
     📌 <strong>  <p style="font-size:20px;">Distribución Binomial</strong>  
     El comportamiento del número total de victorias sigue una distribución binomial, dado que cada giro puede modelarse como un experimento de Bernoulli (éxito o fracaso). El gráfico mostró que el valor real de victorias se encuentra dentro del rango de mayor probabilidad, indicando que el juego es consistente con la teoría probabilística.
