@@ -233,11 +233,13 @@ else:
 
 st.title("🎰 Simulación de Ruleta - Proyecto de Distribuciones")
 
+st.write("holaaaaa")
 # Inputs
 capital_inicial = st.number_input("Capital inicial", value=1000)
 apuesta = st.number_input("Valor de cada apuesta", value=10)
 giros = st.number_input("Número de giros (apuestas)", value=1000)
-
+ventaja = st.slider("🎯 Porcentaje de ventaja del jugaddor (%)", 30, 80, 48)
+probabilidad_ganar = ventaja / 100
 # Botón de simulación
 if st.button("Iniciar Simulación"):
     capital = capital_inicial
@@ -254,12 +256,21 @@ if st.button("Iniciar Simulación"):
         resultado = random.randint(0, 36)
         eleccion = random.choice(["rojo", "negro"])
         es_rojo = resultado in [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]
-        gano = False
+        
+        # Lógica de ruleta real
+        gano_ruleta = (eleccion == "rojo" and es_rojo) or (eleccion == "negro" and not es_rojo and resultado != 0)
+        
+        # Ajuste de ventaja
+        probabilidad_real = 18 / 37  # 48.65% en ruleta europea
+        sesgo = probabilidad_ganar / probabilidad_real
+        if sesgo >= 1:
+            gano = gano_ruleta or random.random() < (sesgo - 1)
+        else:
+            gano = gano_ruleta and random.random() < sesgo
 
-        if (eleccion == "rojo" and es_rojo) or (eleccion == "negro" and not es_rojo and resultado != 0):
+        if gano:
             capital += apuesta
             victorias += 1
-            gano = True
             if giros_sin_ganar > 0:
                 intentos_entre_victorias.append(giros_sin_ganar)
             giros_sin_ganar = 0
@@ -288,7 +299,6 @@ if st.button("Iniciar Simulación"):
 
 # Mostrar resultados solo si ya se generaron
 if "df" in st.session_state:
-
     df = st.session_state.df
     victorias = st.session_state.victorias
     frecuencia_relativa = st.session_state.frecuencia_relativa
